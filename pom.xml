@@ -7,6 +7,9 @@
     <groupId>io.github.underscore11code</groupId>
     <artifactId>oldwolv</artifactId>
     <version>1.0.1</version>
+
+    <name>OldWolv</name>
+
     <build>
         <defaultGoal>clean install</defaultGoal>
         <plugins>
@@ -31,6 +34,7 @@
                             <classpathPrefix>dependency-jars/</classpathPrefix>
                         </manifest>
                     </archive>
+                    <finalName>${project.name}</finalName>
                 </configuration>
             </plugin>
             <plugin>
