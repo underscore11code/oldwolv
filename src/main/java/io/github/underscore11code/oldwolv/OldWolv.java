@@ -1,23 +1,19 @@
 package io.github.underscore11code.oldwolv;
 
+import com.google.gson.Gson;
 import io.github.underscore11code.oldwolv.util.CommandUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.activity.ActivityType;
-import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageBuilder;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.user.User;
-import org.snakeyaml.engine.v2.api.Load;
-import org.snakeyaml.engine.v2.api.LoadSettings;
-import org.snakeyaml.engine.v2.api.LoadSettingsBuilder;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class OldWolv {
     @Getter(AccessLevel.PUBLIC) private static DiscordApi api;
@@ -28,11 +24,11 @@ public class OldWolv {
     private static String onofflogchannelid = "666088790372253716";
 
     public static void main(String[] args) {
-        LoadSettings settings = LoadSettings.builder().build();
-        Load load = new Load(settings);
         try {
-            version = (String) load.loadFromInputStream(OldWolv.class.getClassLoader().getResource("ver.txt").openStream());
-        } catch (IOException ignored) {}
+            version = new Scanner(OldWolv.class.getClassLoader().getResource("ver.txt").openStream()).nextLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Logging in...");
         api = new DiscordApiBuilder().setToken(args[0]).login().join();
         System.out.printf("Logged in to %s\n", api.getYourself().getDiscriminatedName());
