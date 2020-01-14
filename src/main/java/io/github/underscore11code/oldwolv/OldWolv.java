@@ -10,19 +10,29 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageBuilder;
 import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.user.User;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.api.LoadSettings;
+import org.snakeyaml.engine.v2.api.LoadSettingsBuilder;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class OldWolv {
     @Getter(AccessLevel.PUBLIC) private static DiscordApi api;
-    @Getter(AccessLevel.PUBLIC) private static String version = "1.0.0-SNAPSHOT";
+    @Getter(AccessLevel.PUBLIC) private static String version;
     @Getter(AccessLevel.PUBLIC) private static CommandManager commandManager;
     @Getter(AccessLevel.PUBLIC) private static String prefix = "$$";
     @Getter(AccessLevel.PUBLIC) private static User owner;
     private static String onofflogchannelid = "666088790372253716";
 
     public static void main(String[] args) {
+        LoadSettings settings = LoadSettings.builder().build();
+        Load load = new Load(settings);
+        try {
+            version = (String) load.loadFromInputStream(OldWolv.class.getClassLoader().getResource("ver.txt").openStream());
+        } catch (IOException ignored) {}
         System.out.println("Logging in...");
         api = new DiscordApiBuilder().setToken(args[0]).login().join();
         System.out.printf("Logged in to %s\n", api.getYourself().getDiscriminatedName());
