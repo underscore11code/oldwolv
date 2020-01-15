@@ -7,7 +7,7 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 public class PermissionUtil {
-    @Getter private static PermissionType[] staffPerms= {PermissionType.MANAGE_ROLES, PermissionType.MANAGE_CHANNELS, PermissionType.BAN_MEMBERS, PermissionType.KICK_MEMBERS, PermissionType.MANAGE_SERVER, PermissionType.PRIORITY_SPEAKER};
+    @Getter private static PermissionType[] staffPerms= {PermissionType.MANAGE_ROLES, PermissionType.MANAGE_CHANNELS, PermissionType.BAN_MEMBERS, PermissionType.KICK_MEMBERS, PermissionType.MANAGE_SERVER};
 
     public static boolean isBotOwner(User user) {
         return OldWolv.getOwner().equals(user);
