@@ -12,6 +12,7 @@ import org.javacord.api.entity.permission.Permissions;
 import org.javacord.api.entity.user.User;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -37,6 +38,11 @@ public class OldWolv {
         System.out.println("Done!");
         owner = getApi().getOwner().join();
         System.out.printf("You may invite the bot with:\n%s (no perms)\n%s (Admin)\n", getApi().createBotInvite(), getApi().createBotInvite(Permissions.fromBitmask(8)));
+        File guildConfigFolder = new File("guildconfig");
+        if (!guildConfigFolder.exists()) {
+            guildConfigFolder.mkdir();
+            System.out.println("Made guild config folder");
+        }
         getApi().updateActivity(ActivityType.WATCHING, getPrefix() + "help | v" + getVersion());
         getApi().addMessageCreateListener(event -> getCommandManager().processCommand(event));
 
