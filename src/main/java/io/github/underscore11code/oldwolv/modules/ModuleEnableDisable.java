@@ -56,4 +56,20 @@ public class ModuleEnableDisable {
         } else
             CommandUtil.sendUserError(cmd.getRawEvent(), "Not in a server!", "");
     }
+
+    @Command(triggers = "disabled", args = "", helpMsg = "Lists all disabled commands in the server")
+    public static void commandDisabled(CommandInfo cmd) {
+        if (cmd.getServer().isPresent()) {
+            String out = "";
+            for (String disabledCommand : GuildConfig.get(cmd.getServer().get().getIdAsString()).getDisabledCommands()) {
+                out = out + disabledCommand + "\n";
+            }
+            EmbedBuilder embed = CommandUtil.getTemplateEmbed();
+            embed.setTitle("Disabled commands in " + cmd.getServer().get().getName());
+            embed.setDescription(out);
+            embed.setColor(Color.BLUE);
+            CommandUtil.sendReply(cmd.getRawEvent(), embed);
+        } else
+            CommandUtil.sendUserError(cmd.getRawEvent(), "Not in a server!", "");
+    }
 }
