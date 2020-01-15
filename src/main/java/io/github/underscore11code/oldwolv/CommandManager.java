@@ -49,7 +49,7 @@ public class CommandManager {
         if (message.getAuthor().isWebhook())
             return;
         String[] cmd = content.substring(OldWolv.getPrefix().length()).split(" ");
-        Method method = commands.get(cmd[0]);
+        Method method = commands.get(cmd[0].toLowerCase());
         if (method != null)
         try {
             method.invoke(null, new CommandInfo(cmd[0], Arrays.copyOfRange(cmd, 1, cmd.length), event));
