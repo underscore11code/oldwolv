@@ -1,6 +1,8 @@
 package io.github.underscore11code.oldwolv;
 
+import io.github.underscore11code.oldwolv.config.GuildConfig;
 import io.github.underscore11code.oldwolv.modules.*;
+import io.github.underscore11code.oldwolv.util.CommandUtil;
 import io.github.underscore11code.oldwolv.util.PrettyUtil;
 import lombok.Getter;
 import org.javacord.api.entity.message.Message;
@@ -17,7 +19,7 @@ public class CommandManager {
     @Getter private HashMap<String, Method> commands = new HashMap<>();
 
     public CommandManager() {
-        Class<?>[] moduleClasses = {ModuleInfo.class, ModuleLookup.class, ModuleVerify.class};
+        Class<?>[] moduleClasses = {ModuleInfo.class, ModuleLookup.class, ModuleVerify.class, ModuleEnableDisable.class};
 
         for (Class<?> clazz : moduleClasses) {
             System.out.printf("Initializing module %s\n", clazz.getName());
@@ -49,16 +51,22 @@ public class CommandManager {
         if (message.getAuthor().isWebhook())
             return;
         String[] cmd = content.substring(OldWolv.getPrefix().length()).split(" ");
-        Method method = commands.get(cmd[0]);
-        if (method != null)
-        try {
-            method.invoke(null, new CommandInfo(cmd[0], Arrays.copyOfRange(cmd, 1, cmd.length), event));
-        } catch (IllegalAccessException e) {
-            System.out.printf("Could not run command %s because it's declaring method (%s) is not public", cmd[0], commands.get(cmd[0]).getName());
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            System.out.printf("Could not run command %s because it's declaring method (%s) is not static", cmd[0], commands.get(cmd[0]).getName());
-            e.printStackTrace();
+        Method method = commands.get(cmd[0].toLowerCase());
+        if (method != null) {
+            CommandInfo cmdInfo = new CommandInfo(cmd[0], Arrays.copyOfRange(cmd, 1, cmd.length), event);
+            if (cmdInfo.getServer().isPresent())
+                if (GuildConfig.get(cmdInfo.getServer().get().getIdAsString()).getDisabledCommands().contains(cmdInfo.getLabel()) && !cmdInfo.isServerAdmin())
+                    CommandUtil.sendUserError(event, "That command is disabled in this server!", "");
+                else
+            try {
+                method.invoke(null, cmdInfo);
+            } catch (IllegalAccessException e) {
+                System.out.printf("Could not run command %s because it's declaring method (%s) is not public", cmd[0], commands.get(cmd[0]).getName());
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                System.out.printf("Could not run command %s because it's declaring method (%s) is not static", cmd[0], commands.get(cmd[0]).getName());
+                e.printStackTrace();
+            }
         }
     }
 }
