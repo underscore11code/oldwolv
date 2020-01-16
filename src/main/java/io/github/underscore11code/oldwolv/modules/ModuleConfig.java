@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ModuleEnableDisable {
+public class ModuleConfig {
     @Command(triggers = "disable", args = "<command>", helpMsg = "Disables the <command> given server-wide.\nAdmins can still override it")
     public static void commandDisable(CommandInfo cmd) {
         if (cmd.getServer().isPresent()) {

@@ -3,7 +3,6 @@ package io.github.underscore11code.oldwolv;
 import io.github.underscore11code.oldwolv.config.GuildConfig;
 import io.github.underscore11code.oldwolv.modules.*;
 import io.github.underscore11code.oldwolv.util.CommandUtil;
-import io.github.underscore11code.oldwolv.util.PrettyUtil;
 import lombok.Getter;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -19,7 +18,7 @@ public class CommandManager {
     @Getter private HashMap<String, Method> commands = new HashMap<>();
 
     public CommandManager() {
-        Class<?>[] moduleClasses = {ModuleInfo.class, ModuleLookup.class, ModuleVerify.class, ModuleEnableDisable.class};
+        Class<?>[] moduleClasses = {ModuleInfo.class, ModuleLookup.class, ModuleVerify.class, ModuleConfig.class};
 
         for (Class<?> clazz : moduleClasses) {
             System.out.printf("Initializing module %s\n", clazz.getName());
