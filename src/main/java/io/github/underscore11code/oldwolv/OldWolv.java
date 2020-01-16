@@ -2,6 +2,7 @@ package io.github.underscore11code.oldwolv;
 
 import com.google.gson.Gson;
 import io.github.underscore11code.oldwolv.util.CommandUtil;
+import io.github.underscore11code.oldwolv.util.VersionUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.javacord.api.DiscordApi;
@@ -25,10 +26,12 @@ public class OldWolv {
     private static String onofflogchannelid = "666088790372253716";
 
     public static void main(String[] args) {
-        try {
-            version = new Scanner(OldWolv.class.getClassLoader().getResource("ver.txt").openStream()).nextLine();
-        } catch (IOException e) {
-            e.printStackTrace();
+        VersionUtil.load();
+        if (VersionUtil.get("git.branch").equals("master")) {
+            version = VersionUtil.get("git.build.version");
+        } else {
+            version = VersionUtil.get("git.build.version") + "-DEV";
+            prefix = "$$$";
         }
         System.out.println("Logging in...");
         api = new DiscordApiBuilder().setToken(args[0]).login().join();

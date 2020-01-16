@@ -1,6 +1,7 @@
 package io.github.underscore11code.oldwolv.util;
 
 import io.github.underscore11code.oldwolv.OldWolv;
+import io.github.underscore11code.oldwolv.config.GuildConfig;
 import lombok.Getter;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.server.Server;
@@ -31,6 +32,10 @@ public class PermissionUtil {
         for (PermissionType perm : staffPerms)
             if (server.hasPermission(user, perm))
                 return true;
+        for (String id : GuildConfig.get(server.getIdAsString()).getStaffRoleIds())
+            if (server.getRoleById(id).isPresent())
+                if (user.getRoles(server).contains(server.getRoleById(id).get()))
+                    return true;
         return false;
     }
 }
