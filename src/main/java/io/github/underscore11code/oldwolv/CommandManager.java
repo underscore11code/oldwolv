@@ -16,23 +16,14 @@ import java.util.HashMap;
 public class CommandManager {
     @Getter private ArrayList<Command> annotationList = new ArrayList<>();
     @Getter private HashMap<String, Method> commands = new HashMap<>();
+    @Getter private static Class<?>[] moduleClasses = {ModuleInfo.class, ModuleLookup.class, ModuleVerify.class, ModuleConfig.class};
 
     public CommandManager() {
-        Class<?>[] moduleClasses = {ModuleInfo.class, ModuleLookup.class, ModuleVerify.class, ModuleConfig.class};
-
         for (Class<?> clazz : moduleClasses) {
             System.out.printf("Initializing module %s\n", clazz.getName());
             for (Method method : clazz.getMethods()) {
                 if (!method.isAnnotationPresent(Command.class))
                     continue;
-                if (method.getParameterCount() != 1) {
-                    System.out.printf("  Method %s#%s is annotated as Command but does not have a parameters\n", clazz.getName(), method.getName());
-                    continue;
-                }
-                if (method.getParameters()[0].getType() != CommandInfo.class) {
-                    System.out.printf("  Method %s#%s is annotated as Command but parameter 0 != CommandInfo\n", clazz.getName(), method.getName());
-                    continue;
-                }
                 Command command = method.getAnnotation(Command.class);
                 annotationList.add(command);
                 for (String trigger : command.triggers())
