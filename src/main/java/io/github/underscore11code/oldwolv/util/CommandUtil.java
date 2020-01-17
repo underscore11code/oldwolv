@@ -21,7 +21,7 @@ public class CommandUtil {
     }
 
     public static CompletableFuture<Message> sendReply(MessageCreateEvent event, io.github.underscore11code.oldwolv.messages.Message message) {
-        return sendReply(event, getTemplateEmbed().setColor(message.getMessageType().getEmbedColor()).setTitle(message.getTitle()).setDescription(message.getDescription()), "\u2705");
+        return sendReply(event, getTemplateEmbed().setColor(message.getMessageType().getEmbedColor()).setTitle(message.getTitle()).setDescription(message.getDescription()), message.getMessageType().getReaction());
     }
 
     public static EmbedBuilder getTemplateEmbed() {
