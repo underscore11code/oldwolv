@@ -1,8 +1,11 @@
 package io.github.underscore11code.oldwolv;
 
 import io.github.underscore11code.oldwolv.config.GuildConfig;
+import io.github.underscore11code.oldwolv.messages.MessageType;
+import io.github.underscore11code.oldwolv.messages.SimpleMessage;
 import io.github.underscore11code.oldwolv.modules.*;
 import io.github.underscore11code.oldwolv.util.CommandUtil;
+import io.github.underscore11code.oldwolv.util.PrettyUtil;
 import lombok.Getter;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -63,7 +66,7 @@ public class CommandManager {
                 System.out.printf("Could not run command %s because it's declaring method (%s) is not public", cmd[0], commands.get(cmd[0]).getName());
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
-                System.out.printf("Could not run command %s because it's declaring method (%s) is not static", cmd[0], commands.get(cmd[0]).getName());
+                CommandUtil.sendReply(cmdInfo.getRawEvent(), new SimpleMessage(MessageType.ERROR, "Exception thrown while running command: " + e.getCause().getMessage(), ""));
                 e.printStackTrace();
             }
         }
