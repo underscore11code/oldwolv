@@ -156,4 +156,29 @@ public class ModuleConfig {
         } else
             CommandUtil.sendUserError(cmd.getRawEvent(), "Not in a server!", "");
     }
+
+    @Command(triggers = {"setverifiedrole"}, args = "<role>", helpMsg = "Sets the role to give when verified")
+    public static void commandSetVerified(CommandInfo cmd) {
+        if (cmd.getServer().isPresent()) {
+            if (cmd.isServerAdmin()) {
+                if (cmd.getArgs().size() != 1) {
+                    GuildConfig config = GuildConfig.get(cmd.getServer().get().getIdAsString());
+                    config.setVerifiedRoleId("");
+                    config.save();
+                    CommandUtil.sendReply(cmd.getRawEvent(), CommandUtil.getTemplateEmbed().setColor(Color.GREEN).setTitle("Unset Verified role!").setDescription("Verifications will now use a role named `Verified`, if present"));
+                } else {
+                    String id = cmd.getArgs().get(0).replace("<@&", "").replace(">", "");
+                    if (cmd.getServer().get().getRoleById(id).isPresent()) {
+                        GuildConfig config = GuildConfig.get(cmd.getServer().get().getIdAsString());
+                        config.setVerifiedRoleId(id);
+                        config.save();
+                        CommandUtil.sendReply(cmd.getRawEvent(), CommandUtil.getTemplateEmbed().setColor(Color.GREEN).setTitle("Set verified role to " + cmd.getServer().get().getRoleById(id).get().getName()));
+                    } else
+                        CommandUtil.sendUserError(cmd.getRawEvent(), "Unknown Role!", "");
+                }
+            } else
+                CommandUtil.sendUserError(cmd.getRawEvent(), "You don't have permission!", "");
+        } else
+            CommandUtil.sendUserError(cmd.getRawEvent(), "Not in a server!", "");
+    }
 }

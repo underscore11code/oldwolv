@@ -18,6 +18,8 @@ public class GuildConfig {
 
     @Getter @Setter ArrayList<String> disabledCommands = new ArrayList<>();
 
+    @Getter @Setter String verifiedRoleId;
+
     @Getter private String guildId;
 
     private GuildConfig(String guildId) {
