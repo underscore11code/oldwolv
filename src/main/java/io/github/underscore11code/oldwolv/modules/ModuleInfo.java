@@ -4,12 +4,19 @@ import io.github.underscore11code.oldwolv.OldWolv;
 import io.github.underscore11code.oldwolv.util.CommandUtil;
 import io.github.underscore11code.oldwolv.util.PrettyUtil;
 import io.github.underscore11code.oldwolv.util.VersionUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.awt.*;
+import java.util.ArrayList;
 
-public class ModuleInfo {
+public class ModuleInfo implements Module{
+    @Getter String name = "Info";
+    @Getter String description = "General info about the bot";
+    @Getter @Setter ArrayList<Command> commands = new ArrayList<>();
+
     @Command(triggers = {"help", "h", "?"}, args = "", helpMsg = "Displays commands")
     public static void commandHelp(CommandInfo cmd) {
         EmbedBuilder embed = CommandUtil.getTemplateEmbed();

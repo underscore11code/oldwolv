@@ -4,6 +4,8 @@ import io.github.underscore11code.oldwolv.OldWolv;
 import io.github.underscore11code.oldwolv.config.GuildConfig;
 import io.github.underscore11code.oldwolv.util.CommandUtil;
 import io.github.underscore11code.oldwolv.util.PermissionUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Role;
@@ -13,7 +15,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ModuleConfig {
+public class ModuleConfig implements Module {
+    @Getter String name = "Config";
+    @Getter String description = "Commands for getting and setting config options";
+    @Getter @Setter ArrayList<Command> commands = new ArrayList<>();
+
     @Command(triggers = "disable", args = "<command>", helpMsg = "Disables the <command> given server-wide.\nAdmins can still override it")
     public static void commandDisable(CommandInfo cmd) {
         if (cmd.getServer().isPresent()) {

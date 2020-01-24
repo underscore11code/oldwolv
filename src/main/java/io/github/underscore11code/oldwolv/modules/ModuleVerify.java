@@ -5,14 +5,21 @@ import io.github.underscore11code.oldwolv.config.GuildConfig;
 import io.github.underscore11code.oldwolv.messages.*;
 import io.github.underscore11code.oldwolv.util.CommandUtil;
 import io.github.underscore11code.oldwolv.util.PermissionUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.awt.*;
+import java.util.ArrayList;
 
-public class ModuleVerify {
+public class ModuleVerify implements Module{
+    @Getter String name = "Verify";
+    @Getter String description = "Commands for verifying new server members";
+    @Getter @Setter ArrayList<Command> commands = new ArrayList<>();
+
     @Command(triggers = {"verify", "v"}, args = "<user>", helpMsg = "Gives the <user> the Verified role")
     public static void commandVerify(CommandInfo cmd) {
         if (!cmd.getServer().isPresent()) {

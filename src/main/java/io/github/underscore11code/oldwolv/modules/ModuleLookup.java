@@ -5,6 +5,8 @@ import io.github.underscore11code.oldwolv.util.CommandUtil;
 import io.github.underscore11code.oldwolv.util.EmojiUtil;
 import io.github.underscore11code.oldwolv.util.PermissionUtil;
 import io.github.underscore11code.oldwolv.util.PrettyUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.javacord.api.entity.channel.ServerChannel;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
@@ -15,8 +17,13 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.awt.*;
+import java.util.ArrayList;
 
-public class ModuleLookup {
+public class ModuleLookup implements Module{
+    @Getter String name = "Lookup";
+    @Getter String description = "Utilities to lock up various Discord entities";
+    @Getter @Setter ArrayList<Command> commands = new ArrayList<>();
+
     @Command(triggers = {"lookup", "lu"},
             args = "<server|channel|user|invite|role> [id]",
             helpMsg = "Looks up the given [id] of <type>\nDefaults to current channel, server, and the user to trigger the command")
