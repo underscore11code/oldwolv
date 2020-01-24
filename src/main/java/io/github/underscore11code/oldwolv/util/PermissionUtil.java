@@ -38,4 +38,8 @@ public class PermissionUtil {
                     return true;
         return false;
     }
+
+    public static boolean botHasPermission(Server server, PermissionType permissionType) {
+        return server.hasPermission(OldWolv.getApi().getYourself(), permissionType) || server.hasPermissions(OldWolv.getApi().getYourself(), PermissionType.ADMINISTRATOR);
+    }
 }
