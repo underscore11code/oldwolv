@@ -8,6 +8,7 @@ import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.awt.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommandUtil {
@@ -33,6 +34,10 @@ public class CommandUtil {
     }
 
     public static String cleanId(String id) {
-        return Pattern.compile("<[@#][!&]?([0-9]+)>").matcher(id.trim()).group(1);
+        System.out.println("Running CommandUtil#cleanId(\"" + id.trim() + "\");");
+        Matcher matcher = Pattern.compile("(?:<[@#][!&]?)?(?<id>[0-9]+)(?:>)?").matcher(id.trim());
+        System.out.println("Group count: " + matcher.groupCount());
+        System.out.println("Matches: " + matcher.matches());
+        return matcher.group("id");
     }
 }
