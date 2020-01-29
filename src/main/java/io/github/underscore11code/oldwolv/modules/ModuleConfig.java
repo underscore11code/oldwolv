@@ -106,7 +106,7 @@ public class ModuleConfig implements Module {
             CommandUtil.sendUserError(cmd.getRawEvent(), "Not in a server!", "");
     }
 
-    @Command(triggers = {"remstaff", "removestaff"}, args = "<command>", helpMsg = "Adds a role as staff")
+    @Command(triggers = {"remstaff", "removestaff"}, args = "<command>", helpMsg = "Removes a role as staff")
     public static void commandRemStaff(CommandInfo cmd) {
         if (cmd.getServer().isPresent()) {
             if (cmd.isServerAdmin()) {
@@ -120,7 +120,7 @@ public class ModuleConfig implements Module {
                         staffRoles.remove(id);
                         config.setStaffRoleIds(staffRoles);
                         config.save();
-                        CommandUtil.sendReply(cmd.getRawEvent(), CommandUtil.getTemplateEmbed().setColor(Color.GREEN).setTitle("Added staff role " + cmd.getArgs().get(0)));
+                        CommandUtil.sendReply(cmd.getRawEvent(), CommandUtil.getTemplateEmbed().setColor(Color.GREEN).setTitle("Removed staff role " + cmd.getArgs().get(0)));
                     } else
                         CommandUtil.sendUserError(cmd.getRawEvent(), "Unknown Role!", "");
                 }
