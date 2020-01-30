@@ -67,7 +67,8 @@ public class OldWolv {
     }
 
     public static void stop() {
-        getApi().getTextChannelById(onofflogchannelid).ifPresent(channel -> new MessageBuilder().setEmbed(CommandUtil.getTemplateEmbed().setTitle("Bot offline!").setColor(Color.RED)).send(channel));
+        getApi().updateActivity(ActivityType.PLAYING, "SHUTTING DOWN");
+        getApi().getTextChannelById(onofflogchannelid).ifPresent(channel -> new MessageBuilder().setEmbed(CommandUtil.getTemplateEmbed().setTitle("Bot offline!").setColor(Color.RED)).send(channel).join());
         getApi().disconnect();
         System.exit(0);
     }
