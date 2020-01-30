@@ -7,34 +7,60 @@ import io.github.underscore11code.oldwolv.util.VersionUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class ModuleInfo implements Module{
-    @Getter String name = "Info";
+public class ModuleInfo implements Module {
+    @Getter String name = "About";
     @Getter String description = "General info about the bot";
     @Getter @Setter ArrayList<Command> commands = new ArrayList<>();
 
-    @Command(triggers = {"help", "h", "?"}, args = "", helpMsg = "Displays commands")
+    @Command(triggers = {"help", "h", "?"}, args = "[module|command]", helpMsg = "Displays commands")
     public static void commandHelp(CommandInfo cmd) {
         EmbedBuilder embed = CommandUtil.getTemplateEmbed();
-        embed.setDescription("`<>`: required, `[]`: optional, `|`: or");
-        for (Command command : OldWolv.getCommandManager().getAnnotationList()) {
-            embed.addField(command.triggers()[0] + " " + PrettyUtil.prettyArray(command.args()), command.helpMsg() + "\nAliases: " + PrettyUtil.prettyArray(command.triggers(), ","));
+        if (cmd.getArgs().size() == 0) {
+            String desc = "<required> [optional] | or\n";
+            for (Module module : OldWolv.getCommandManager().getModules().values()) {
+                desc = desc + "`" + module.getName() + "`: " + module.getDescription() + "\n";
+            }
+            embed.setDescription(desc + "\n\n`" + OldWolv.getPrefix() + "help [module]` for more information");
+            embed.setTitle(OldWolv.getApi().getYourself().getName() + " Help: Modules");
+        } else {
+            String query = cmd.getArgs().get(0);
+            embed.setDescription("<required> [optional] | or");
+            embed.setTitle(OldWolv.getApi().getYourself().getName() + " Help: " + query);
+            if (OldWolv.getCommandManager().getModules().containsKey(query)) {
+                Module module = OldWolv.getCommandManager().getModules().get(query);
+                String moduleDesc = "";
+                for (Command command : module.getCommands()) {
+                    moduleDesc = moduleDesc + "`" + PrettyUtil.prettyArray(command.triggers(), "|") + (!(command.args()[0].equals("@null")) ? " " + PrettyUtil.prettyArray(command.args()) : "") + "` " + command.helpMsg() + "\n";
+                }
+                embed.addField("Module: " + module.getName(), moduleDesc);
+            }
+            if (OldWolv.getCommandManager().getCommands().containsKey(query)) {
+                String commandDesc = "";
+                for (Command command : OldWolv.getCommandManager().getAnnotations()) {
+                    for (String trigger : command.triggers()) {
+                        if (trigger.equals(query.toLowerCase())) {
+                            commandDesc = commandDesc + "`" + PrettyUtil.prettyArray(command.triggers(), "|") + (!(command.args()[0].equals("@null")) ? " " + PrettyUtil.prettyArray(command.args()) : "") + "` " + command.helpMsg() + "\n";
+                            embed.addField("Command: " + command.triggers()[0], commandDesc);
+                        }
+                    }
+                }
+            }
         }
         embed.setColor(Color.GRAY);
-        embed.setTitle("Help");
         CommandUtil.sendReply(cmd.getRawEvent(), embed);
     }
 
-    @Command(triggers = {"ping", "p"}, args = "", helpMsg = "Sees how quickly the bot can respond")
+    @Command(triggers = {"ping", "p"}, args = "@null", helpMsg = "Sees how quickly the bot can respond")
     public static void commandPing(CommandInfo cmd) {
         CommandUtil.sendReply(cmd.getRawEvent(), CommandUtil.getTemplateEmbed().setTitle("Pong!"));
     }
 
-    @Command(triggers = "info", args = "", helpMsg = "Prints info about the bot")
+    @Command(triggers = "info", args = "@null", helpMsg = "Prints info about the bot")
     public static void commandInfo(CommandInfo cmd) {
         EmbedBuilder embed = CommandUtil.getTemplateEmbed();
         embed.setTitle(OldWolv.getApi().getYourself().getName());

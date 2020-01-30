@@ -1,6 +1,8 @@
 package io.github.underscore11code.oldwolv;
 
 import com.google.gson.Gson;
+import io.github.underscore11code.oldwolv.modules.*;
+import io.github.underscore11code.oldwolv.modules.Module;
 import io.github.underscore11code.oldwolv.util.CommandUtil;
 import io.github.underscore11code.oldwolv.util.VersionUtil;
 import lombok.AccessLevel;
@@ -37,7 +39,7 @@ public class OldWolv {
         api = new DiscordApiBuilder().setToken(args[0]).login().join();
         System.out.printf("Logged in to %s\n", api.getYourself().getDiscriminatedName());
         System.out.println("Initializing Commands...");
-        commandManager = new CommandManager();
+        commandManager = new CommandManager(new Module[]{new ModuleConfig(), new ModuleInfo(), new ModuleLookup(), new ModuleVerify()});
         System.out.println("Done!");
         owner = getApi().getOwner().join();
         System.out.printf("You may invite the bot with:\n%s (no perms)\n%s (Admin)\n", getApi().createBotInvite(), getApi().createBotInvite(Permissions.fromBitmask(8)));
@@ -53,6 +55,8 @@ public class OldWolv {
         long starttime = System.currentTimeMillis();
 
         Scanner in = new Scanner(System.in);
+        // yes I know this won't exit normally, that's the point. Stop warning me about it.
+        //noinspection InfiniteLoopStatement
         while (true) {
             String cmd = in.next();
             if (cmd.equalsIgnoreCase("stop")) {

@@ -66,7 +66,7 @@ public class ModuleConfig implements Module {
             CommandUtil.sendUserError(cmd.getRawEvent(), "Not in a server!", "");
     }
 
-    @Command(triggers = "disabled", args = "", helpMsg = "Lists all disabled commands in the server")
+    @Command(triggers = "disabled", args = "@null", helpMsg = "Lists all disabled commands in the server")
     public static void commandDisabled(CommandInfo cmd) {
         if (cmd.getServer().isPresent()) {
             String out = "";
@@ -130,7 +130,7 @@ public class ModuleConfig implements Module {
             CommandUtil.sendUserError(cmd.getRawEvent(), "Not in a server!", "");
     }
 
-    @Command(triggers = "staff", args = "", helpMsg = "Lists all staff roles")
+    @Command(triggers = "staff", args = "@null", helpMsg = "Lists all staff roles")
     public static void commandStaffRoles(CommandInfo cmd) {
         if (cmd.getServer().isPresent()) {
             String manuallyAdded = "";

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class ModuleLookup implements Module{
     @Getter String name = "Lookup";
-    @Getter String description = "Utilities to lock up various Discord entities";
+    @Getter String description = "Utilities to look up various Discord entities";
     @Getter @Setter ArrayList<Command> commands = new ArrayList<>();
 
     @Command(triggers = {"lookup", "lu"},

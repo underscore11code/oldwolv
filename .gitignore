@@ -102,3 +102,4 @@ fabric.properties
 .idea/misc.xml
 .idea/vcs.xml
 oldwolv.iml
+!/dependency-reduced-pom.xml
