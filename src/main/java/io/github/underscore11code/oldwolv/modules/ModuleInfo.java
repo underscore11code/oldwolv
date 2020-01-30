@@ -7,6 +7,7 @@ import io.github.underscore11code.oldwolv.util.VersionUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.entity.permission.Permissions;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -70,6 +71,14 @@ public class ModuleInfo implements Module {
         embed.addField("Libraries used", "[Javacord](https://javacord.org/) - Discord API\n[Gson](https://github.com/google/gson) - Configuration saving and loading");
         embed.addField("Version", OldWolv.getVersion() + "\nCommit " + VersionUtil.get("git.commit.id") + "\nBranch " + VersionUtil.get("git.branch"));
         embed.setColor(Color.BLUE);
+        CommandUtil.sendReply(cmd.getRawEvent(), embed);
+    }
+
+    @Command(triggers = "invite", args = "@null", helpMsg = "Gives a invite link for the bot")
+    public static void commandInvite(CommandInfo cmd) {
+        EmbedBuilder embed = CommandUtil.getTemplateEmbed();
+        embed.setTitle(OldWolv.getApi().getYourself().getName() + " invite");
+        embed.setDescription("[Click Me!](" + OldWolv.getApi().createBotInvite(Permissions.fromBitmask(8)) + ")");
         CommandUtil.sendReply(cmd.getRawEvent(), embed);
     }
 }
